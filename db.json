@@ -1,0 +1,26 @@
+{
+  "tasks": [
+    {
+      "text": "Task 4",
+      "day": "Apr, 2022 4am",
+      "reminder": true,
+      "id": 1
+    },
+    {
+      "text": "task2",
+      "day": "Oct 4, 2024 4am",
+      "reminder": true,
+      "id": 2
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}
