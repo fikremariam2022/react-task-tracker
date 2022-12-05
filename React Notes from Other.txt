@@ -1,0 +1,964 @@
+FreeCodeCamp
+url of the video titorial: https://www.youtube.com/watch?v=4UZrsTqkcW4
+React is a javascript library for building user interfaces
+Was developed at Facebook in 2011.
+
+Componenets - independent chunks of user interfaces. Can be as small as one html elt,  or you can jam entire app in it.
+The later opposes react its purpose is to build  independent, isolated most importantly reusable components.
+
+Use of components 
+ => reusability
+ => When u want update, u do it once and every places that makes refrence of the componenet will be updated.
+ => since react uses Virtual Dom, and when changes are made, only the components that are updated are affected, hence speed.
+    It is done w/o re-rendering the whole app. => User experience.
+	
+	What is virtual Dom?
+	
+	Virtual DOM is nothing but a strategy that React uses to optimize the performance of an application. 
+	It provides a mechanism that compares two render trees to know what exactly has changed and only updates what is necessary on the actual DOM
+
+All react app has one component called root component.
+---------------------------
+npm init -y
+npm install bootstrap --save
+
+You don t need to use create-react-app to create a react app, you can manually set up. But the former set up the app quickly.
+npx create-react-app my-app
+------------------
+create-react-app uses bubble and webpack
+bubble is a javascript transpiler that converts newer javascript to good old javascript which helps our app run smoothly on all browsers
+webpack - bundle our resources, watch for changes, run bubble transpiler
+
+
+npm start -> start the dev server
+npm run build -> bundle the app into static files for production
+
+npm eject - Running the eject script will remove the single build dependency from your project. 
+-------------------------------
+
+Delete all except index.js
+import React from 'react' is a javascript ES6 specific code,
+and if you don't user './' it means it is from node modules folder.
+-------------------------------
+import React from 'react'
+import ReactDOM  from 'react-dom'
+
+function Greeting() {
+  return <h4>this is Jhon and this is not my first react</h4>
+}
+
+ReactDOM.render(<Greeting />, document.getElementById('root'))
+
+///////////////in current react app, rendering in index.js is like the following
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+---------------------------------
+What is React.strictMode?
+React. StrictMode is a tool that highlights potential issues in a programme. It works by encapsulating
+ a portion of your full application as a component. StrictMode does not render any visible elements in the DOM 
+ in development mode, but it enables checks and gives warnings.
+----------------------------------------------
+In react you must have a self closing tag if you have not a closing tag. Greeting />
+
+------------------------
+
+Extensions that will help you to format a code
+
+Pretier - Code formatter
+
+Emmet extension for javascript intellicence auto suggest regular function rafc
+
+ES7 React/Redux/GraphQL/React-Native snippets => extension for auto suggest react code
+
+React components should always return JSX element
+
+--------------------------------------------------
+We can also create a JSX element with React.creatElement function of react
+React.createElememt([Element], [Props object], [Childeren])
+e.g.
+const Greeting=()=>{
+const jsxElt = React.createElememt('h1', {}, 'hello world') //=> <h1>hello world</h1>
+ return jsxElt
+}
+
+No adjacent element is not allowed to the returned JSX element.
+
+Every component need to have a return. Other wise the error 'Nothing was returned from render. This usually means a return statement is missing'
+
+The jsx element should start with Capital letter
+
+You can wrapp in empty tag <></> which is a shortcut for <React.Fragment></React.Fragment>
+
+use came case for all props e.g. onClick
+use className instead of class which would not work
+parentesis in the same line as return is recommended return(...
+
+----------------------------
+importing css => you have to use extension and dirctly call it (no from )
+
+
+import './index.css'
+
+----------------------------------
+Commenting in JSX 
+/* THIS IS A COMMENT */
+
+
+
+-------------------------------
+Avoiding repeating props word
+
+Example
+const Book = (props) => {
+  return (
+    <article className="book">
+      <img src={props.imgSrc} alt="" />
+
+      <h1>{props.title}</h1>
+      <h4
+        style={{ color: "#617d98", fontSize: "0.75rem", marginTop: "0.25rem" }}
+      >
+        {props.author}
+      </h4>
+    </article>
+  );
+};
+so use by defining the variables as const, in javascript called object destructuring
+
+const Book = (props) => {
+  const { author, title, imgSrc } = props;
+
+  return (
+    <article className="book">
+      <img src={imgSrc} alt="" />
+
+      <h1>{title}</h1>
+      <h4
+        style={{ color: "#617d98", fontSize: "0.75rem", marginTop: "0.25rem" }}
+      >
+        {author}
+      </h4>
+    </article>
+  );
+};
+-----------
+or simply w/o defining const variable, instead of props use the expected variable in the object
+const Book = ({ author, title, imgSrc }) => {
+...........
+}
+================================================
+how to access inner text
+
+use the 'children' special object name to access the eleement's inner text data
+
+<book props...>innerText</book>
+
+const Book = ({ author, title, imgSrc, children }) => {
+...........
+<p>{children}</p>
+}
+
+or simply from props, props.children
+===================================
+css book list to align items in a grid and controlling items height 
+
+.bookList {
+	display: grid
+	gap: 2rem;
+	margin: 3rem auto;
+}
+@media screen and (min-width: 768px) {
+    .bookList {
+        grid-template-columns: repeat(3, 1fr);
+        align-items: start;/*very important - each cell ll have its own height */
+    }
+    
+}
+===================================================
+
+Passing props
+const book = {author:'', title:'', imgSrc:''}
+Method one
+
+        <Book author={book.author} title={book.title} imgSrc={book.imgSrc}>
+          {book.overview}
+        </Book>
+Method two destructuring
+
+const {author, title, imgSrc} = book
+<Book author={author} title={title} imgSrc={imgSrc}>
+          {book.overview}
+        </Book>
+Method 3 passing as object
+<Book book={book}>
+          {book.overview}
+        </Book>
+for the last case, when you access the object values use props.book
+const {author, titlt, imgSrs} = props.book
+...
+
+Method 4 spread out property// instead of passing the object book as above, it copies and spread the properties to access one by one. handy method to use method one above
+<Book key={book.id} {...book}>
+          {book.overview}
+        </Book>
+		
+
+=======================
+
+EVENT
+Note the difference
+<button onClick={handleClick()} this function is executed the moment you run the page because the function is invoked the moment the app is run. 
+right away the page is rendered
+<button onClick={handleClick} this function is executed whenever the button is clicked
+so the second is correct way of handling an event, but how do we pass parameter, use the following arrow function
+<button onClick={()=> handleClick(x)} 
+--------------------
+java script event are all written in lowercase, while react even are all written in cammelCase
+
+importing constants from another file, e.g. if books is defined and exported in file '/data.js' since it is a js file we don't need to have the extension
+import {books} from './data'
+
+==================================
+Deployment npm start => starts the dev server, spins up
+
+use
+npm run build //this creates the build folder
+
+go to netify
+click on new website
+select manual deploy
+drag and drop the build folder
+=====================================================
+
+
+ADVANCED React
+
+Why useState is used in react
+see the following example
+
+const ErrorExample = () => {
+  let title = "Random title";
+  const handleClick = () => {
+    title = "hello world";
+    console.log(title);
+  };
+  return (
+    <React.Fragment>
+      <h2>{title}</h2>
+      <button type="button" className="btn" onClick={handleClick}>
+        Change Title
+      </button>
+    </React.Fragment>
+  );
+};
+
+does clicking the button change the title in the above example? No, b/c while changing the variable, the component does not re-rendered.
+
+this is only using useState
+=======
+importing useState
+
+import {useState} from 'react'
+
+what does useState() returns? It returns array of two items, the first is the state value and the second is the function that controls the state
+e.g.
+console.log(useState())  // ['undefined', f]
+console.log(useState(2))  // [2, f] //2 is default value
+console.log(useState(2)[0] //2
+
+So let's use object destructuring 
+const [myVal, setMyVal] = useState('hello world')
+console.log(myVal) // 'hello world'
+console.log(setMyVal)  the function
+
+===========================
+Only in this way possible.
+const UseStateBasics = () => {
+  const [text, setText] = useState("Random Title");
+  const handleClick = () => {
+    setText(text === "Random Title" ? "hello world" : "Random Title");
+  };
+  return (
+    <React.Fragment>
+      <h2>{text}</h2>
+      <button className="btn" type="button" onClick={handleClick}>
+        Change Title
+      </button>
+    </React.Fragment>
+  );
+};
+
+It means we are required to invoke useState' s set function in the click handler method to tell react to re-render the component otherwise dow ll not be updated.
+
+Note that inorder to use useState we should use it in react function /component. (starting letter of react function is uppercase)
+====================================
+use state objects
+Note
+objects are set to values of types same to that they are originally set. Otherwise doing so will wipe our all values w/o error.
+
+So setting up a state for object should go as follow. first copy all the values and then list the changed ones as follow.
+  const [person, setPerson] = useState({
+    name: "Peter",
+    age: 24,
+    message: "random message",
+  });
+  const changeMessage = () => {
+    setPerson({ ...person, message: "changed Message" });//name and age are left unchanged while only message is updated.
+	
+  };
+
+
+
+=========================
+There is no rule that prevent you from setting up as many state value as you like (rather than using one giantic object)
+
+==============================================
+User state counter example
+
+using the right value of object state. Some times when we pass setTimeout function, we may endup not getting the right value of the state. So it is safe
+to use the prev value and evaluate any expresssion based on it. So it is important to rely on prevValue that come from the function in setValue.
+
+<button type="button" className="btn" onClick={increase}>
+          Increase
+        </button>
+const cIncrease = () => {
+    setTimeout(() => {
+	//setValue(value + 1) this does not read the right value of value. click 5 times 
+      setValue((prevValue) => prevValue + 1);//this will read the correct values, 5 times increament is made after 2 seconds
+    }, 2000);
+  };
+
+
+====================
+thus
+setValue(0) is wrong use setValue(()=>0) 
+
+setVlue(value +1) is wrong, and use setValue((prevValue)=>prevValue +1)
+
+====================================================================
+USE EFFECT
+also called side effect
+think of use effect works to be done outside of the component, e.g, changing the document title, subscription to fetch data
+
+useEffect will run on every render
+
+===============================================
+USE Effect is executed only once when the compoenent is rendered.
+but if the component has a useState and has called setValue to update state, the component should be re rendered to update the dom. in this case use effect is also called. 
+
+React Rule on UseEffect: => you cannot make useEffect conditional. E.g. You cannot put useEffect inside if
+However you can use if statement inside useEffect
+
+===========================
+Dependency list in useEffect
+The second arguement in useEffect is called dependency list. If you pass empty array, it means we tell react to run the callback fn inside useEffect only once.
+
+CHANGING STATE IN USEEFFECT WILL TRIGGER TO RE-RENDER, THUS WILL RESULTS IN INFINITE LOOP. SO YOU NEED TO PASS EXPLICITELY THE EMPTY ARRAY TO DEPENDENCY PARAMENTER.
+
+You can use as many useEffect as in your component
+=============================
+
+Use Effect cleaning up
+Note: Setting Value using useState is triggering a re render of the component, so execution of useEffect. Due to this any subscription in useEffect should have
+means of cleaning up, otherwise can cause memory leak.
+
+useEffect also has a return method, we use this method for cleanup 
+
+const UseEffectCleanup = () => {
+  const [size, setSize] = useState(window.innerWidth);
+  const checkSize = () => {
+    console.log(size);
+    setSize(window.innerWidth);
+  };
+  useEffect(() => {
+    window.addEventListener("resize", checkSize);
+    return () => window.removeEventListener("resize", checkSize);
+  });
+  return (
+    <>
+      <h1>window size</h1>
+      <h2>{`PX ${size}`}</h2>
+    </>
+  );
+};
+================
+any code in the return menthod of the useEffect will be executed just before the component is re-rendered.
+
+In the above particular example we can however pass empty array dependency for useEffect, to subscribe single time only.
+========================================================================================================
+
+CONDITIONAL RENDERING
+import React, { useState, useEffect } from 'react';
+const url = 'https://api.github.com/users/QuincyLarson';
+const MultipleReturns = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const [user, setUser] = useState('default user');
+
+  useEffect(() => {
+    fetch(url)
+      .then((resp) => {
+        if (resp.status >= 200 && resp.status <= 299) {
+          return resp.json();
+        } else {
+          setIsLoading(false);
+          setIsError(true);
+          throw new Error(resp.statusText);
+        }
+      })
+      .then((user) => {
+        const { login } = user;
+        setUser(login);
+        setIsLoading(false);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div>
+        <h1>Loading...</h1>
+      </div>
+    );
+  }
+  if (isError) {
+    return (
+      <div>
+        <h1>Error....</h1>
+      </div>
+    );
+  }
+  return (
+    <div>
+      <h1>{user}</h1>
+    </div>
+  );
+};
+
+export default MultipleReturns;
+=============================================================
+in the above example when you catch error, you r not catching 404 error but network error. So you needed to check success fetch using error code
+if (resp.status >= 200 && resp.status <= 299) or you can simply say if(res.ok)
+
+404 error is not an error for the fetch(), so it succeeds in returning a promise.
+Returning a promise in the sense, the promise is not rejected. According to the second point to be remembered,
+ the catch() block handles the rejection of a promise
+
+To handle such errors, fetch provides an “ok” property for the response object it returns.
+
+Network errors, syntax errors and url errors goes to catch 
+
+=======================================================================
+
+Short Circuits
+using the && and || operators and display the result
+
+|| if not true, display
+       {isLogin || <h1>Login</h1>
+ 
+&& if true, display
+ e.g.  {isError && <h1>Error...</h1>}
+ 
+ { name || 'default name'} //using it to set the default 
+ {name && <h2>Hello world, {name}</h2>} //hello world, Abebe 
+
+
+Note the short circuit operator is not limited to html element, you can use it with react component
+
+isLogin || <Login />
+
+=======================================
+cleaning is requiered from the return of useEffect, there are cases where just by empty dependency only we can't enforce to run the useEffect only once.
+E.g. In a clicking a toggle to load and unload a componenent which hase useEffect inside which there is a subscription. As the user toggles multiple times the ll be
+a multiple subscription. 
+
+import React, { useState, useEffect } from 'react';
+
+const ShowHide = () => {
+  const [show, setShow] = useState(false);
+  return (
+    <>
+      <button className='btn' onClick={() => setShow(!show)}>
+        show/hide
+      </button>
+      {show && <Item />}
+    </>
+  );
+};
+
+const Item = () => {
+  const [size, setSize] = useState(window.innerWidth);
+  const checkSize = () => {
+    setSize(window.innerWidth);
+  };
+  useEffect(() => {
+    window.addEventListener('resize', checkSize);
+    return () => {
+      window.removeEventListener('resize', checkSize);
+    };
+  }, []);
+
+  return (
+    <div style={{ marginTop: '2rem' }}>
+      <h1>Window</h1>
+      <h2>size : {size}</h2>
+    </div>
+  );
+};	
+
+export default ShowHide;
+
+==================================================================
+
+FORMS
+-------
+import React, { useState } from "react";
+// JS
+// const input = document.getElementById('myText');
+// const inputValue = input.value
+// React
+// value, onChange
+
+const ControlledInputs = () => {
+  const [firstName, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [people, setPeople] = useState([]);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    //if name and email are not empty add to people
+    if (firstName && email) {
+      //create unique id
+      const person = { id: new Date().getTime().toString(), firstName, email };
+      console.log(person);
+      setPeople((people) => {
+        return [...people, person];
+      });
+      console.log(people);
+
+      //cleare inputs
+      setName("");
+      setEmail("");
+    } else {
+      console.log("Please enter a value");
+    }
+  };
+
+  return (
+    <>
+      <form className="form">
+        <div className="form-control">
+          <label htmlFor="firstName">Name :</label>
+          <input
+            value={firstName}
+            type="text"
+            name="firstName"
+            id="firstName"
+            onChange={(e) => {
+              setName(e.target.value);
+            }}
+          ></input>
+        </div>
+        <div className="form-control">
+          <label htmlFor="email">Email :</label>
+          <input
+            value={email}
+            type="email"
+            name="email"
+            id="email"
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
+          ></input>
+        </div>
+        <button className="btn" onClick={handleSubmit}>
+          Submit
+        </button>
+      </form>
+      <ul>
+        {people.map((person) => {
+          const { id, firstName, email } = person;
+          return (
+            <li key={id} className="item">
+              <h4>{firstName}</h4>
+              <div>{email}</div>
+            </li>
+          );
+        })}
+      </ul>
+    </>
+  );
+};
+
+export default ControlledInputs;
+
+
+--------------------------------
+
+If you put value but not onChange properties, there would be an error on console log saying "failed prop you provided value without onChange handler"
+And also the input values are empty and their values cannot be changed by typing. Why? b/s they are connected to state values and they always represent
+the value equal to the state values which are empty in the above example.
+
+So you need to set onChange in which you set the state value to e.target.value. Each and every time you tiped the state value ll be updated and the updated
+and the  controll ll get that value.
+==============================================
+
+useRef
+-preserve values b/n renders
+-doesn't trigger render
+-They are mostly used for targeting the Dom nodes/elements
+
+import React, { useEffect, useRef } from "react";
+
+// preserves value
+// DOES NOT trigger re-render
+// target DOM nodes/elements
+
+const UseRefBasics = () => {
+ 
+  const refContainer = useRef(null);
+  useEffect(()=>{
+   console.log(refContainer.current);
+   refContainer.current.focus();
+ })
+  const handleClick = (e) => {
+    e.preventDefault();
+    console.log(refContainer.current.value);
+  };
+
+  return (
+    <>
+      <form className="form">
+        <div className="form-control">
+          <input type="text" ref={refContainer}></input>
+          <button type="submit" onClick={(e) => handleClick(e)}>
+            Submit
+          </button>
+        </div>
+      </form>
+    </>
+  );
+};
+
+export default UseRefBasics;
+
+=============================================================
+Reducer
+================
+in reducer.js 
+export const reducer = (state, action) => {
+  if (action.type === "ADD_ITEM") {
+    const newItems = [...state.people, action.payload];
+    return {
+      ...state,
+      people: newItems,
+      isModalOpen: true,
+      modalContent: "Item added",
+    };
+  } else if (action.type === "NO_VALUE") {
+    return {
+      ...state,
+      isModalOpen: true,
+      modalContent: "Please enter a value",
+    };
+  } else if (action.type === "REMOVE_ITEM") {
+    const newPeople = state.people.filter((p) => p.id !== action.payload);
+    return {
+      ...state,
+      people: newPeople,
+    };
+  } else if (action.type === "CLOSE_MODAL") {
+    return {
+      ...state,
+      isModalOpen: false,
+    };
+  }
+  return state;
+};
+===========
+in index.js
+import React, { useState, useReducer } from "react";
+import Modal from "./Modal";
+import { data } from "../../../data";
+import { reducer } from "./reducer";
+// reducer function
+
+const Index = () => {
+  const defaultState = {
+    people: data,
+    isModalOpen: false,
+    modalContent: "",
+  };
+
+  const [name, setName] = useState("");
+  const [state, dispatch] = useReducer(reducer, defaultState);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (name) {
+      const newItem = { id: new Date().getTime().toString(), name: name };
+      dispatch({ type: "ADD_ITEM", payload: newItem });
+      setName("");
+    } else dispatch({ type: "NO_VALUE" });
+  };
+  const closeModal = () => {
+    dispatch({ type: "CLOSE_MODAL" });
+  };
+
+  return (
+    <>
+      {state.isModalOpen && (
+        <Modal modalContent={state.modalContent} closeModal={closeModal} />
+      )}
+      <form className="form" onSubmit={handleSubmit}>
+        <div>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          ></input>
+        </div>
+        <button className="btn" type="submit">
+          submit
+        </button>
+      </form>
+      {state.people.map((person) => {
+        return (
+          <div key={person.id} className="item">
+            <h4>{person.name}</h4>
+            <button
+              type="button"
+              onClick={() => {
+                dispatch({ type: "REMOVE_ITEM", payload: person.id });
+              }}
+            >
+              Remove
+            </button>
+          </div>
+        );
+      })}
+    </>
+  );
+};
+
+export default Index;
+=========================================================
+prop drilling
+is a situation we are forced in passing some property throgh many componenets down in the hirarchy to achieve some functionality. We have to set props
+that do not related functionally to the component since there is no otherway. 
+This is fixed using context API or for very complex senario using redux
+
+Note don't write as follow
+<Person id={person.id} name={person.name} age={person.age} ..... />
+
+Just use a short hand way the spread operation
+
+=========================
+API Context
+ useContext allow us to transfer data from provider component to consumer component in cases that otherwise causes prop drilling.
+
+To solve prop drilling, use first define context outside the component
+const PersonContext = React.createContext();
+
+then wrap the element with the context and assign the prop to value
+
+          <PersonContext.Provider value={{removePerson}}>
+            <SinglePerson
+              key={person.id}
+              {...person}
+             />
+          </PersonContext.Provider>
+
+<Person {...person} />
+
+
+
+then use the prop in any component from
+const {removePerson} = useContext(PersonContext);
+
+====================================================================
+useFetch => custom hook=> a javascript function where you can use useEffect as custom hook to pack codes for reusability purpose.
+Note that useFetch is a react key word, you can't use another name which results error from using useEffect in 
+use fetch is used to pack fetch related code, which can be significantly large, in another file in useFetch method.
+
+import { useState, useEffect } from "react";
+export const useFetch = (url) => {
+  const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState([]);
+
+  const getProducts = async () => {
+    const response = await fetch(url);
+    const products = await response.json();
+    setProducts(products);
+    setLoading(false);
+  };
+  useEffect(() => {
+    getProducts();
+  }, [url]);
+  return { products, loading };
+};
+====================================================================
+Then using the above code
+
+import React, { useState, useEffect } from "react";
+import { useFetch } from "./2-useFetch";
+
+// ATTENTION!!!!!!!!!!
+// I SWITCHED TO PERMANENT DOMAIN
+const url = "https://course-api.com/javascript-store-products";
+
+const Example = () => {
+  const { products, loading } = useFetch(url);
+  console.log(products);
+  return (
+    <div>
+      <h2>{loading ? "loading..." : "data"}</h2>
+    </div>
+  );
+};
+
+export default Example;
+
+====================================================================
+Even if 99 out of 100 items get values of image url, if one of them is going to be missing , since you are checking for the property that is in the object 
+you ll get a big fat error.
+In such case you need to trouble shoot the error (use propTypes) and or you may need to have some default value (use propDefault)
+PropTypes tell us which props are missing.
+
+import React from 'react';
+import PropTypes from 'prop-types';
+import defaultImage from '../../../assets/default-image.jpeg';
+const Product = ({ image, name, price }) => {
+  const url = image && image.url;
+  return (
+    <article className='product'>
+      <img src={url || defaultImage} alt={name || 'default name'} />
+      <h4>{name}</h4>
+      <p>${price || 3.99}</p>
+    </article>
+  );
+};
+
+Product.propTypes = {
+  image: PropTypes.object.isRequired,
+  name: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
+};
+ Product.defaultProps = {
+   name: 'default name',
+   price: 3.99,
+   image: defaultImage,
+ };
+ 
+ ===================================================================
+ React Router is not part of the official react eventhough it might be so due to its popularity
+ React Router is an external library and not part of the official React code. But it is popular
+ npm install react-router-dom
+ 
+ Why exact is required, it is b/s every other url is nested under '/' the home url, so they are also contain this url. Even if you have 
+ one url under the other url, you have to include the key word 'exact' to the parent url.
+ 
+ ======================================
+ Performance Optimization
+ 
+ Every time props are changed or state is set, there will be a re-rendering of compoenent.
+ 
+ So includ the component that should be memorized and not should be rerendered in React.memorized
+ const BigList = React.memo(({ products }) => {
+  return (
+    <section className="products">
+      {products.map((product) => {
+        return <SingleProduct key={product.id} {...product}></SingleProduct>;
+      })}
+    </section>
+  );
+});
+
+----------------------------
+useCallback
+We want to limit re-render of a function or re run of a function to only when a specified state is changed. Otherwise react rerun the function whenever any state
+value is changed. 
+In this case we use useCallback
+
+In this example react will run the following function only when cart is updated or changed. Otherwise click me can make it rerun as it change the count state.
+const addToCart = useCallback(
+    (id) => {
+      console.log(`product is added${id}`);
+      setCart(cart + 1);
+    },
+    [cart]
+  );
+  <button className="btn" onClick={() => setCount(count + 1)}>
+        click me
+      </button>
+  
+ <BigList products={products} addToCart={addToCart} />
+
+ 
+ ----------------------------------
+ useMemo
+ 
+ we want to casche result of some calculations or function b/s it is expensive to always run it whenever some state is changed. in this case we use useMemo
+ 
+  const calculateMostExpensiveMemo = useMemo(() => {
+    return calculateMostExpensive(products);
+  }, [products]);
+  
+  const calculateMostExpensive = (data) => {
+    console.log("Calculator run");
+    return (
+      data.reduce((total, item) => {
+        const price = item.fields.price;
+        if (price > total) total = price;
+        return total;
+      }, 0) / 100
+    );
+  };
+  ------------------------------------
+  
+ When we talk about client-side rendering, it’s about rendering content in the browser using JavaScript. So instead of getting all the content from the HTML document itself, a bare-bones HTML document 
+ with a JavaScript file in initial loading itself is received, which renders the rest of the site using the browser.
+ 
+ React SyntheticEvent provides a unified API, prevents browser inconsistencies, and ensures that the event works across multiple platforms.
+ What is server-side rendering?
+Server-side rendering is when content on your webpage is rendered on the server and not on your browser using JavaScript.
+
+sends a .js file to the client, and the clients’ browser JavaScript engine creates the markup after the .js file is loaded.
+
+
+In server-side rendering when a user makes a request to a webpage, the server prepares an HTML page by fetching user-specific data 
+and sends it to the user’s machine over the internet.
+  ->loading time and the user experience
+
+
+However, every website wants to earn first place in the search results. When it comes to a SPA, that’s not very easy to achieve. 
+As we discussed, when a search engine (crawler) such as Google sees our website, it sees the HTML with blank <div id="app"></div> element
+ because most search engine crawler only reads the HTML returned by the server and do not run the application as our browser would. 
+ This happens for every page of the website.
+
+Therefore there is a strong possibility that your website might never end up in the first few pages of the search results. So how can we 
+fix that? The only way to fix this is by generating the HTML on the server for the given page but only on the first load.
+
+Server-side rendering is when content on your webpage is rendered on the server and not on your browser using JavaScript. For example, 
+with a typical PHP or WordPress site, the page is loaded from content that is coming via HTTP, which was rendered on the server and 
+comes as fully rendered HTML.
+
+This is in contrast to a React app built with CRA, which just sends a .js file to the client, and the clients’ browser JavaScript
+ engine creates the markup after the .js file is loaded. Examples of traditional SSR languages/frameworks are PHP, Java, ASP.NET, and Node.js.
+
+Traditional SSR apps were predominant in the early web until the influx of client-side libraries. Now, server-side rendered React apps 
+use Node for the server, which is a key difference from traditional server-rendered apps (we’ll see how later on in this post).
+
+
+
+
+
+
+
+
+
+
+
